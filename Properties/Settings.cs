@@ -38,7 +38,7 @@ namespace Snake.Properties {
             Height = 16;
             Speed = 5;
             Score = 0;
-            isDebug = false;
+            isDebug = true;
             GameOver = false;
             isGameStarted = false;
             direction = Directions.Down;

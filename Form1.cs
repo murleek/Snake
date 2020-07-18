@@ -32,11 +32,11 @@ namespace Snake
 		private void updateScreen(object sender, EventArgs e)
 		{
 			
-				if (Input.KeyPress(Keys.Right))
+				if (Input.KeyPress(Keys.Right) && Settings.direction != Directions.Left)
 				{
 					Settings.direction = Directions.Right;
 				}
-				else if (Input.KeyPress(Keys.Left))
+				else if (Input.KeyPress(Keys.Left) && Settings.direction != Directions.Right)
 				{
 					Settings.direction = Directions.Left;
 				}
