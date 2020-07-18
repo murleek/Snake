@@ -17,44 +17,38 @@ namespace Snake
 		
 		private List<Square> Snake = new List<Square>();
 		private Square food = new Square();
+		private Settings settings;
 		public Form1()
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
 			InitializeComponent();
-			new Settings();
-				gameTimer.Interval = 100 / Settings.Speed;
-				gameTimer.Tick += updateScreen;
-				gameTimer.Start();
+			settings = new Settings();
+			gameTimer.Interval = 100 / settings.Speed;
+			gameTimer.Tick += updateScreen;
+			gameTimer.Start();
 		}
 
 		private void updateScreen(object sender, EventArgs e)
 		{
+			if (Input.KeyPress(Keys.Right) && settings.direction != Directions.Left)
+				settings.direction = Directions.Right;
+		
+			else if (Input.KeyPress(Keys.Left) && settings.direction != Directions.Right)
+				settings.direction = Directions.Left;
 			
-				if (Input.KeyPress(Keys.Right) && Settings.direction != Directions.Left)
-				{
-					Settings.direction = Directions.Right;
-				}
-				else if (Input.KeyPress(Keys.Left) && Settings.direction != Directions.Right)
-				{
-					Settings.direction = Directions.Left;
-				}
-				else if (Input.KeyPress(Keys.Up) && Settings.direction != Directions.Down)
-				{
-					Settings.direction = Directions.Up;
-				}
-				else if (Input.KeyPress(Keys.Down) && Settings.direction != Directions.Up)
-				{
-					Settings.direction = Directions.Down;
-				}
-                
-				else if (Input.KeyPress(Keys.K) && Settings.isDebug == true)
-				{
-					debugEat();
-				}
+			else if (Input.KeyPress(Keys.Up) && settings.direction != Directions.Down)
+				settings.direction = Directions.Up;
+			
+			else if (Input.KeyPress(Keys.Down) && settings.direction != Directions.Up)
+				settings.direction = Directions.Down;
 
-				movePlayer();
+			else if (Input.KeyPress(Keys.K) && settings.isDebug == true)
+				debugEat();
+			
+
+			movePlayer();
 			
 			pbCanvas.Invalidate();
 		}
@@ -67,8 +61,8 @@ namespace Snake
 				Y = Snake[Snake.Count - 1].Y
 			};
 			Snake.Add(body);
-			Settings.Score += 1;
-			label3.Text = Settings.Score.ToString();
+			settings.Score += 1;
+			label3.Text = settings.Score.ToString();
 		}
 		private void movePlayer()
 		{
@@ -76,7 +70,7 @@ namespace Snake
 			{
 				if (i == 0)
 				{
-					switch (Settings.direction)
+					switch (settings.direction)
 					{
 						case Directions.Right:
 							Snake[i].X++;
@@ -91,22 +85,18 @@ namespace Snake
 							Snake[i].Y++;
 							break;
 					}
-					int maxXpos = pbCanvas.Size.Width / Settings.Width;
-					int maxYpos = pbCanvas.Size.Height / Settings.Height;
-				   
-						if (Snake[i].X < 0 )
-						{
-							Snake[i].X = maxXpos;
-						} else if (Snake[i].X == maxXpos)
-						{
-							Snake[i].X = 0;
-						} else if (Snake[i].Y < 0)
-						{
-							Snake[i].Y = maxYpos;
-						} else if (Snake[i].Y == maxYpos)
-						{
-							Snake[i].Y = 0;
-						}
+					int maxXpos = pbCanvas.Size.Width / settings.Width;
+					int maxYpos = pbCanvas.Size.Height / settings.Height;
+
+                    if (Snake[i].X < 0)
+						Snake[i].X = maxXpos;
+					else if (Snake[i].X == maxXpos)
+						Snake[i].X = 0;
+					else if (Snake[i].Y < 0)
+						Snake[i].Y = maxYpos;
+					else if (Snake[i].Y == maxYpos)
+						Snake[i].Y = 0;
+
 					for (int j = 1; j < Snake.Count; j++)
 					{
 						if (Snake[i].X == Snake[j].X && Snake[i].Y == Snake[j].Y)
@@ -138,7 +128,7 @@ namespace Snake
 		{
 			Graphics canvas = e.Graphics;
 
-			if (Settings.GameOver == false)
+			if (!settings.GameOver)
 			{
 				Brush snakeColour;
 
@@ -147,40 +137,38 @@ namespace Snake
                     snakeColour = i == 0 ? Brushes.Black : Brushes.Green;
 					
                     canvas.FillRectangle(snakeColour, new Rectangle(
-						Snake[i].X * Settings.Width,
-						Snake[i].Y * Settings.Height,
-						Settings.Width, Settings.Height
+						Snake[i].X * settings.Width,
+						Snake[i].Y * settings.Height,
+						settings.Width, settings.Height
 					));
 					
 					canvas.FillEllipse(Brushes.SpringGreen, new Rectangle(
-						food.X * Settings.Width,
-						food.Y * Settings.Height,
-						Settings.Width, Settings.Height
+						food.X * settings.Width,
+						food.Y * settings.Height,
+						settings.Width, settings.Height
 					));
 				}
 			}
 			else
 			{
-				string gameOver =
-					$"Game is over\nFinal score - {Settings.Score}";
-				label2.Text = gameOver;
+				label2.Text = $"Game is over";
 				label2.Visible = true;
 			}
 		}
 		private void startGame()
 		{
 			label2.Visible = false;
-			new Settings();
+			settings = new Settings();
 			Snake.Clear();
 			Square head = new Square() { X = 10, Y = 5 };
 			Snake.Add(head);
-			label3.Text = Settings.Score.ToString();
+			label3.Text = settings.Score.ToString();
 			generateFood();
 		}
 		private void generateFood()
 		{
-			int maxXpos = pbCanvas.Size.Width / Settings.Width;
-			int maxYpos = pbCanvas.Size.Height / Settings.Height;
+			int maxXpos = pbCanvas.Size.Width / settings.Width;
+			int maxYpos = pbCanvas.Size.Height / settings.Height;
 
 			Random rnd = new Random();
 
@@ -195,14 +183,14 @@ namespace Snake
 				Y = Snake[Snake.Count - 1].Y
 			};
 			Snake.Add(body);
-			Settings.Score += 1;
-			label3.Text = Settings.Score.ToString();
+			settings.Score += 1;
+			label3.Text = settings.Score.ToString();
 			generateFood();
 		}
 		private void die()
         {
             button2.Visible = true;
-			Settings.GameOver = true;
+			settings.GameOver = true;
 		}
         private void button2_Click(object sender, EventArgs e)
         {
