@@ -1,4 +1,6 @@
-﻿namespace Snake.Properties {
+﻿using System;
+
+namespace Snake.Properties {
 
     public enum Directions
     {
@@ -7,12 +9,6 @@
         Up,
         Down
     };
-
-    public enum debugKeys
-    {
-        L,
-        K
-    }
     // This class allows you to handle specific events on the settings class:
     //  The SettingChanging event is raised before a setting's value is changed.
     //  The PropertyChanged event is raised after a setting's value is changed.
@@ -25,10 +21,10 @@
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static int Speed { get; set; }
+
         public static int Score { get; set; }
         public static bool GameOver { get; set; }
         public static Directions direction { get; set; }
-        public static debugKeys debug { get; set; }
         public Settings() {
 
 
@@ -41,7 +37,6 @@
             Width = 16;
             Height = 16;
             Speed = 5;
-            Score = 0;
             isDebug = false;
             GameOver = false;
             isGameStarted = false;
