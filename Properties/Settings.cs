@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace Snake.Properties {
+﻿namespace Snake.Properties
+{
 
     public enum Directions
     {
