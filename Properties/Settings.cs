@@ -37,6 +37,7 @@ namespace Snake.Properties {
             Width = 16;
             Height = 16;
             Speed = 5;
+            Score = 0;
             isDebug = false;
             GameOver = false;
             isGameStarted = false;

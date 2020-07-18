@@ -13,22 +13,9 @@ namespace Snake
     {
         private static Hashtable keyTable = new Hashtable();
 
-        public static bool KeyPress(Keys key)
-        {
-            if (keyTable[key] == null)
-            {
-                return false;
-            }
-            else
-            {
-                return (bool)keyTable[key];
+        // thx to @r4v3c4t
+        public static bool KeyPress(Keys key) => keyTable[key] != null && (bool)keyTable[key];
 
-            }
-        }
-        public static void changeState(Keys key, bool state)
-        {
-
-            keyTable[key] = state;
-        }
+        public static void changeState(Keys key, bool state) => keyTable[key] = state;
     }
 }
